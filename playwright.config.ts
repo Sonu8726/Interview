@@ -30,11 +30,17 @@ export default defineConfig({
     {
       name: 'chromium',
       use: {
-        headless: false,
-        launchOptions: {
-          args: ['--start-maximized'],
-        },
-        viewport: null,
+        headless: !!process.env.CI, // Headless in CI, headed locally
+        ...(process.env.CI
+          ? {
+              viewport: { width: 1920, height: 1080 },
+            }
+          : {
+              launchOptions: {
+                args: ['--start-maximized'],
+              },
+              viewport: null,
+            }),
       },
     },
   ],
